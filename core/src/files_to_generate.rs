@@ -98,7 +98,7 @@ class {}Serializer(ModelSerializer):
 from .views import {}Api
 
 router = routers.SimpleRouter()
-router.register(r'^/{}', {}Api)
+router.register(r'{}', {}Api)
 
 urlpatterns = router.urls
             ", name_cap, name, name_cap));
