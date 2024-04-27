@@ -1,4 +1,4 @@
-workspace = { members = ["core"] }
+workspace = { members = [ "cli_logic" , "resources_generator"] }
 [package]
 name = "django-tools"
 version = "0.1.0"
@@ -8,5 +8,5 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
-core = { path = "./core" }
-
+cli_logic = { path = "./cli_logic" }
+resources_generator = { path = "./resources_generator" }

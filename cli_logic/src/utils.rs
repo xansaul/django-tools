@@ -1,4 +1,4 @@
-use std::{fs::{self, File}, path::PathBuf};
+use std::{collections::HashMap, fs::{self, File}, io::Write, path::PathBuf};
 
 pub fn create_folder<'a>(path: &PathBuf, folder_name: &'a String) -> Result<&'a str, Box<dyn std::error::Error>> {
 
@@ -55,3 +55,21 @@ pub fn remove_last_character(s: &String) -> String {
 
     modified_string
 }
+
+
+pub fn create_files_and_write_content(complete_path_app: &PathBuf, files:  HashMap<&str, String>)-> Result<(), Box<dyn std::error::Error>>{
+    for (file, content) in files{
+       
+        let result = create_file(&complete_path_app, file);
+        
+        if let Err(error) = result {
+            return Err(error.into());
+        }
+
+        let mut file = result.unwrap();
+
+        file.write(content.as_bytes())?;
+    }
+    Ok(())
+}
+
