@@ -22,6 +22,10 @@ mod tests {
         
         let complete_path_project = args.path.join(format!("./{}",args.name));
         
+        if let Ok(metadata) = fs::metadata(&complete_path_project.join("main.py")){
+            assert!(metadata.is_file());
+        }
+
         fs::remove_dir_all(&complete_path_project).unwrap();
 
         assert!(!complete_path_project.exists());
