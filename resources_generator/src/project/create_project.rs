@@ -60,12 +60,12 @@ fn create_django_project(path_project: &PathBuf, project_name: &String)-> Result
     
     println!("Creating project...");
     
-    let path_win = format!("{}\\venv\\Scripts\\activate", path_project.display());
-    let path_unix = format!("source {}/venv/bin/activate", path_project.display());
+    let path_venv_win = format!("{}\\venv\\Scripts\\activate", path_project.display());
+    let path_venv_unix = format!("source {}/venv/bin/activate", path_project.display());
 
     let python_cmd = format!(
         r#"{} && pip install django && django-admin startproject {} {}"#,
-        if cfg!(windows) { path_win } else { path_unix },
+        if cfg!(windows) { path_venv_win } else { path_venv_unix },
         project_name,
         path_project.to_str().unwrap()
     );
