@@ -15,50 +15,71 @@ pub fn create_project(args: ProjectAction)-> Result<(), Box<dyn std::error::Erro
         return Err(Box::new(error));
     }
 
-    let python_version_output = Command::new("python")
-    .arg("--version")
-    .output();
+    if let Err(error) = create_venv(get_python_cmd()){
+        return Err(error);
+    }
+
+    if let Err(error) = create_django_project(args.name) {
+        return  Err(error);
+    }
+
+    Ok(())
+}
 
 
-    let python_cmd = match python_version_output {
-        Ok(output) => {
-            if output.status.success() {
-                "python"
-            } else {
-                "python3"
-            }
-        }
-        Err(_) => {
-            "python3"
-        }
-    };
-
+fn create_venv(python_cmd: String)-> Result<(), Box<dyn std::error::Error>> {
     println!("Creating virtual env...");
 
     let venv_creation_output = Command::new(python_cmd)
     .arg("-m")
     .arg("venv")
     .arg("venv")
-    .output()
-    .expect("Error creating virtual environment");
+    .output();
 
-    println!("Creating project...");
-
-    if !venv_creation_output.status.success() {
-        return Err("Error creating virtual environment.".into());
+    if  let Err(error) =  venv_creation_output {
+        return Err(Box::new(error));
     }
+    
+    Ok(())
+}
+
+
+fn get_python_cmd() -> String {
+    let python_version_output = Command::new("python")
+    .arg("--version")
+    .output();
+
+
+    let python_cmd = match python_version_output {
+        Ok(_) => {
+            String::from("python")
+        }
+        Err(_) => {
+            String::from("python3")
+        }
+    };
+
+    python_cmd
+}
+
+fn create_django_project(name:String)-> Result<(), Box<dyn std::error::Error>>{
+    
+    println!("Creating project...");
 
     let python_cmd = format!(
         r#"{} && pip install django && django-admin startproject {} ."#,
         if cfg!(windows) { "venv\\Scripts\\activate" } else { "source venv/bin/activate" },
-        args.name
+        name
     );
 
-    Command::new("cmd")
+    let create_project_result = Command::new("cmd")
         .args(&["/C", &python_cmd])
-        .output()
-        .expect("Error executing Python commands");
+        .output();
 
+
+    if let Err(error) = create_project_result {
+        return Err(Box::new(error));
+    }
 
     Ok(())
 }
