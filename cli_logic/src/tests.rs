@@ -2,7 +2,9 @@
 #[cfg(test)]
 mod tests {
 
-    use std::{fs, path::PathBuf};
+    use std::{collections::HashMap, fs, io::Read, path::PathBuf};
+    use tempfile::tempdir;
+
     use crate::utils; 
  
 
@@ -66,8 +68,8 @@ mod tests {
 
     #[test]
     fn must_return_error_if_file_exists(){
-
-        let file_name = "test-file-exists.txt";
+        
+        let file_name: &str = "test-file-exists.txt";
 
         let mut path = PathBuf::from("./");
         let result = utils::create_file(&path, file_name);
@@ -83,5 +85,43 @@ mod tests {
         path.push(file_name);
         
         fs::remove_file(&path).unwrap(); 
+    }
+
+    #[test]
+    fn test_capitalize_first_letter() {
+        let input = String::from("hello");
+        let expected_output = "Hello".to_string();
+        assert_eq!(utils::capitalize_first_letter(&input), expected_output);
+    }
+
+    #[test]
+    fn test_remove_last_character() {
+        let input = String::from("hello");
+        let expected_output = "hell".to_string();
+        assert_eq!(utils::remove_last_character(&input), expected_output);
+    }
+
+    #[test]
+    fn test_create_files_and_write_content() {
+        
+        let temp_dir = tempdir().expect("failed to create temporary directory");
+        let path = temp_dir.path().to_path_buf();
+        
+        let mut files = HashMap::new();
+        files.insert("file1.txt", "Content of file1.txt".to_string());
+        files.insert("file2.txt", "Content of file2.txt".to_string());
+
+        let result = utils::create_files_and_write_content(&path, files);
+
+        
+        assert!(result.is_ok());
+
+        for file_name in &["file1.txt", "file2.txt"] {
+            let file_path = path.join(file_name);
+            let mut file_content = String::new();
+            let mut file = std::fs::File::open(&file_path).expect("failed to open file");
+            file.read_to_string(&mut file_content).expect("failed to read file content");
+            assert_eq!(file_content, format!("Content of {}", file_name));
+        }
     }
 }

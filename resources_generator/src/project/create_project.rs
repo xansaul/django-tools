@@ -1,9 +1,8 @@
-use std::process::Command;
+use std::{path::PathBuf, process::Command};
 use cli_logic::{cli::ProjectAction, utils::create_folder};
-use std::env;
 
 
-pub fn create_project(args: ProjectAction)-> Result<&'static str, Box<dyn std::error::Error>> {
+pub fn create_project(args: &ProjectAction)-> Result<&'static str, Box<dyn std::error::Error>> {
 
     let complete_path_project = args.path.join(&args.name);
 
@@ -11,15 +10,11 @@ pub fn create_project(args: ProjectAction)-> Result<&'static str, Box<dyn std::e
         return Err(error);
     }
 
-    if let Err(error) = env::set_current_dir(&complete_path_project) {
-        return Err(Box::new(error));
-    }
-
-    if let Err(error) = create_venv(get_python_cmd()){
+    if let Err(error) = create_venv(get_python_cmd(), &complete_path_project){
         return Err(error);
     }
 
-    if let Err(error) = create_django_project(args.name) {
+    if let Err(error) = create_django_project(&complete_path_project) {
         return  Err(error);
     }
 
@@ -27,13 +22,13 @@ pub fn create_project(args: ProjectAction)-> Result<&'static str, Box<dyn std::e
 }
 
 
-fn create_venv(python_cmd: String)-> Result<(), Box<dyn std::error::Error>> {
+fn create_venv(python_cmd: String, path: &PathBuf)-> Result<(), Box<dyn std::error::Error>> {
     println!("Creating virtual env...");
 
     let venv_creation_output = Command::new(python_cmd)
     .arg("-m")
     .arg("venv")
-    .arg("venv")
+    .arg(path.join("venv"))
     .output();
 
     if  let Err(error) =  venv_creation_output {
@@ -62,14 +57,14 @@ fn get_python_cmd() -> String {
     python_cmd
 }
 
-fn create_django_project(name:String)-> Result<(), Box<dyn std::error::Error>>{
+fn create_django_project(path_project: &PathBuf)-> Result<(), Box<dyn std::error::Error>>{
     
     println!("Creating project...");
 
     let python_cmd = format!(
         r#"{} && pip install django && django-admin startproject {} ."#,
         if cfg!(windows) { "venv\\Scripts\\activate" } else { "source venv/bin/activate" },
-        name
+        path_project.display()
     );
 
     let create_project_result = Command::new("cmd")
