@@ -1,6 +1,5 @@
 use cli_logic::cli::{CliArgs, Resource};
-use crate::{apiview::codegen::generate_app_apiview, setview::codegen::generate_app_setview};
-
+use crate::{apiview::codegen::generate_app_apiview, project::create_project::create_project, setview::codegen::generate_app_setview};
 
 pub struct Generator;
 
@@ -11,7 +10,7 @@ impl Generator {
         match args.resource {
             Resource::ApiView(args) => generate_app_apiview(args),
             Resource::SetView(args) => generate_app_setview(args),
-            Resource::Project(_) => Ok(())
+            Resource::Project(args) => create_project(args)
         }
     }
 }
