@@ -3,7 +3,7 @@ use cli_logic::{cli::ProjectAction, utils::create_folder};
 use std::env;
 
 
-pub fn create_project(args: ProjectAction)-> Result<(), Box<dyn std::error::Error>> {
+pub fn create_project(args: ProjectAction)-> Result<&'static str, Box<dyn std::error::Error>> {
 
     let complete_path_project = args.path.join(&args.name);
 
@@ -23,7 +23,7 @@ pub fn create_project(args: ProjectAction)-> Result<(), Box<dyn std::error::Erro
         return  Err(error);
     }
 
-    Ok(())
+    Ok("Project created.")
 }
 
 

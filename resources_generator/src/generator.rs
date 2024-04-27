@@ -6,7 +6,7 @@ pub struct Generator;
 
 impl Generator {
 
-    pub fn generate_resource(args: CliArgs)-> Result<(), Box<dyn std::error::Error>> {
+    pub fn generate_resource(args: CliArgs)-> Result<&'static str, Box<dyn std::error::Error>> {
         match args.resource {
             Resource::ApiView(args) => generate_app_apiview(args),
             Resource::SetView(args) => generate_app_setview(args),

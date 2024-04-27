@@ -5,7 +5,7 @@ use super::files_to_generate::SetViewFiles;
 
 
 
-pub fn generate_app_setview(args: ApiType)-> Result<(), Box<dyn std::error::Error>> {
+pub fn generate_app_setview(args: ApiType)-> Result<&'static str, Box<dyn std::error::Error>> {
         
     let result = GenerateCommonFiles::generate_common_files(&args);
     
@@ -25,5 +25,5 @@ pub fn generate_app_setview(args: ApiType)-> Result<(), Box<dyn std::error::Erro
         return Err(error.into());
     }
 
-    Ok(())
+    Ok("SetView app created.")
 }

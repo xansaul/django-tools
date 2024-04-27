@@ -8,7 +8,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let result = Generator::generate_resource(args);
 
     match result {
-        Ok(()) => println!("App created."),
+        Ok(message) => println!("{message}"),
         Err(error) => println!("{error}")  
     }
 

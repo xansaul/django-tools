@@ -4,7 +4,7 @@ use super::files_to_generate::ApiViewFiles;
 
 
 
-pub fn generate_app_apiview(args:ApiType)-> Result<(), Box<dyn std::error::Error>> {
+pub fn generate_app_apiview(args:ApiType)-> Result<&'static str, Box<dyn std::error::Error>> {
 
     let result = GenerateCommonFiles::generate_common_files(&args);
 
@@ -24,5 +24,5 @@ pub fn generate_app_apiview(args:ApiType)-> Result<(), Box<dyn std::error::Error
         return Err(error.into());
     }
 
-    Ok(())
+    Ok("ApiView app created.")
 }
