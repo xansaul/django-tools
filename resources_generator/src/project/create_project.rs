@@ -1,7 +1,6 @@
 use std::{path::PathBuf, process::Command};
 use cli_logic::{cli::ProjectAction, utils::create_folder};
 
-
 pub fn create_project(args: &ProjectAction)-> Result<&'static str, Box<dyn std::error::Error>> {
 
     let complete_path_project = args.path.join(&args.name);
@@ -14,7 +13,7 @@ pub fn create_project(args: &ProjectAction)-> Result<&'static str, Box<dyn std::
         return Err(error);
     }
 
-    if let Err(error) = create_django_project(&complete_path_project) {
+    if let Err(error) = create_django_project(&complete_path_project, &args.name) {
         return  Err(error);
     }
 
@@ -57,20 +56,23 @@ fn get_python_cmd() -> String {
     python_cmd
 }
 
-fn create_django_project(path_project: &PathBuf)-> Result<(), Box<dyn std::error::Error>>{
+fn create_django_project(path_project: &PathBuf, project_name: &String)-> Result<(), Box<dyn std::error::Error>>{
     
     println!("Creating project...");
+    
+    let path_win = format!("{}\\venv\\Scripts\\activate", path_project.display());
+    let path_unix = format!("source {}/venv/bin/activate", path_project.display());
 
     let python_cmd = format!(
-        r#"{} && pip install django && django-admin startproject {} ."#,
-        if cfg!(windows) { "venv\\Scripts\\activate" } else { "source venv/bin/activate" },
-        path_project.display()
+        r#"{} && pip install django && django-admin startproject {} {}"#,
+        if cfg!(windows) { path_win } else { path_unix },
+        project_name,
+        path_project.to_str().unwrap()
     );
 
-    let create_project_result = Command::new("cmd")
+    let create_project_result = Command::new(if cfg!(windows) { "cmd" } else { "sh" })
         .args(&["/C", &python_cmd])
         .output();
-
 
     if let Err(error) = create_project_result {
         return Err(Box::new(error));
