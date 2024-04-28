@@ -59,20 +59,28 @@ fn get_python_cmd() -> String {
 fn create_django_project(complete_path_project: &PathBuf, project_name: &String)-> Result<(), Box<dyn std::error::Error>>{
     
     println!("Creating project...");
-    
+    let path_unix= complete_path_project.strip_prefix("./").unwrap();
+
     let path_venv_win = format!("{}\\venv\\Scripts\\activate", complete_path_project.display());
-    let path_venv_unix = format!("source {}/venv/bin/activate", complete_path_project.display());
-    
-    let python_cmd = format!(
+    let path_venv_unix = format!(". {}/venv/bin/activate", path_unix.to_str().unwrap());
+
+    let python_cmd: String = format!(
         r#"{} && pip install django && django-admin startproject {} {}"#,
         if cfg!(windows) { path_venv_win.replace("/", "\\") } else { path_venv_unix },
         project_name,
         complete_path_project.to_str().unwrap()
     );
 
-    let create_project_result = Command::new(if cfg!(windows) { "cmd" } else { "sh" })
-        .args(&["/C", &python_cmd])
-        .output();
+    let create_project_result = if cfg!(windows) {
+        Command::new("cmd")
+            .args(&["/C", &python_cmd])
+            .output()
+    } else {
+        Command::new("sh")
+            .arg("-c")
+            .arg(python_cmd)
+            .output()
+    };
 
     if let Err(error) = create_project_result {
         return Err(Box::new(error));
