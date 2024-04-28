@@ -3,8 +3,8 @@ use clap::{Parser, Args,Subcommand};
 #[derive(Subcommand, Debug)]
 #[clap(rename_all = "PascalCase")]
 pub enum Resource {
-    /// Generate SetView App
-    SetView(ApiType),
+    /// Generate ViewSet App
+    ViewSet(ApiType),
     /// Generate ApiView App
     ApiView(ApiType),
     /// Generate new project
