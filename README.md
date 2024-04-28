@@ -55,3 +55,8 @@ To generate an ApiView app within your Django project, use the following command
 django-tools ApiView -n dogs
 ```
 This command will create an ApiView app named "dogs" within your Django project.
+
+
+![Captura de pantalla 2024-04-27 184334](https://github.com/xansaul/django-tools/assets/90731443/f135967b-59bd-437a-8160-69a31058f2a8)
+
+
