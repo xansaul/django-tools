@@ -3,13 +3,10 @@
 Django Tools CLI is a command-line interface (CLI) tool written in Rust 🦀 to quickly create APIs in Django. It provides commands to generate different components of a Django project, such as ViewSet, ApiView, and new projects.
 
 ## Installation
-1. **Build the project**: You can build the project from the source code. Clone the repository and navigate to the project directory. Then, run the following command to build the project:
 
-    ```
-    cargo build --release
-    ```
+1. **Download binaries**: You can download pre-built binaries for your operating system from the [releases section](https://github.com/xansaul/django-tools/releases) of the Django Tools CLI GitHub repository.
 
-2. **Configure depending on the operating system**:
+2. **Build from source (Alternative)**: If you prefer, you can build the project from the source code. Clone the repository and navigate to the project directory. Then, follow these steps:
 
     - **Windows**:
         - Take the generated `.exe` file, for example, `django-tools.exe`, and place it in a directory of your choice. For instance, you can place it in `C:\Program Files`.
@@ -28,7 +25,6 @@ Django Tools CLI is a command-line interface (CLI) tool written in Rust 🦀 to 
             sudo cp target/release/django-tools /usr/local/bin/
             ```
         - You might need to use `sudo` to have the necessary permissions to copy the file.
-
 ## Usage
 
 You can utilize Django Tools CLI with the following commands:
