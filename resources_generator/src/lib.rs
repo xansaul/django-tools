@@ -1,5 +1,5 @@
 pub mod common;
-pub mod setview;
+pub mod viewset;
 pub mod apiview;
 pub mod generator;
 pub mod project;
