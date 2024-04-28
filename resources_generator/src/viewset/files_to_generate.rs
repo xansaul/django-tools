@@ -1,9 +1,9 @@
 use std::collections::HashMap;
 use cli_logic::utils;
 
-pub struct SetViewFiles;
+pub struct ViewSetFiles;
 
-impl SetViewFiles {
+impl ViewSetFiles {
 
     pub fn files(name: &String) -> HashMap<&'static str, String> {
         let mut map = HashMap::new();

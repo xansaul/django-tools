@@ -1,11 +1,11 @@
 use cli_logic::{cli::ApiType, utils};
 use crate::common::codegen::GenerateCommonFiles;
 
-use super::files_to_generate::SetViewFiles;
+use super::files_to_generate::ViewSetFiles;
 
 
 
-pub fn generate_app_setview(args: &ApiType)-> Result<&'static str, Box<dyn std::error::Error>> {
+pub fn generate_app_viewset(args: &ApiType)-> Result<&'static str, Box<dyn std::error::Error>> {
         
     let result = GenerateCommonFiles::generate_common_files(&args);
     
@@ -18,12 +18,12 @@ pub fn generate_app_setview(args: &ApiType)-> Result<&'static str, Box<dyn std::
 
     let create_files_result = utils::create_files_and_write_content(
         &complete_path_app,
-        SetViewFiles::files(&name),
+        ViewSetFiles::files(&name),
     );
 
     if let Err(error) = create_files_result {
         return Err(error.into());
     }
 
-    Ok("SetView app created.")
+    Ok("ViewSet app created.")
 }
