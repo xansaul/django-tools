@@ -1,6 +1,7 @@
 use std::{path::PathBuf, process::Command};
 use cli_logic::{cli::ProjectAction, utils::create_folder};
 
+
 pub fn create_project(args: &ProjectAction)-> Result<&'static str, Box<dyn std::error::Error>> {
 
     let complete_path_project = args.path.join(&args.name);
@@ -9,7 +10,11 @@ pub fn create_project(args: &ProjectAction)-> Result<&'static str, Box<dyn std::
         return Err(error);
     }
 
-    if let Err(error) = create_venv(get_python_cmd(), &complete_path_project){
+    if let Err(error) = get_python_cmd() {
+        return  Err(error);
+    }
+
+    if let Err(error) = create_venv(get_python_cmd().unwrap(), &complete_path_project){
         return Err(error);
     }
 
@@ -38,22 +43,32 @@ fn create_venv(python_cmd: String, path: &PathBuf)-> Result<(), Box<dyn std::err
 }
 
 
-fn get_python_cmd() -> String {
+fn get_python_cmd() -> Result<String, Box<dyn std::error::Error>> {
+    // Intenta ejecutar 'python --version'
     let python_version_output = Command::new("python")
-    .arg("--version")
-    .output();
+        .arg("--version")
+        .output();
 
-
-    let python_cmd = match python_version_output {
-        Ok(_) => {
-            String::from("python")
+    // Verifica si 'python --version' fue exitoso
+    if let Ok(output) = python_version_output {
+        if output.status.success() {
+            return Ok("python".to_string());
         }
-        Err(_) => {
-            String::from("python3")
-        }
-    };
+    }
 
-    python_cmd
+    // Intenta ejecutar 'python3 --version' si 'python --version' falla
+    let python3_version_output = Command::new("python3")
+        .arg("--version")
+        .output();
+
+    // Verifica si 'python3 --version' fue exitoso
+    if let Ok(output) = python3_version_output {
+        if output.status.success() {
+            return Ok("python3".to_string());
+        }
+    }
+
+    Err("No se pudo encontrar Python".into())
 }
 
 fn create_django_project(complete_path_project: &PathBuf, project_name: &String)-> Result<(), Box<dyn std::error::Error>>{
