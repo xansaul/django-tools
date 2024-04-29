@@ -14,7 +14,8 @@ mod tests {
     fn must_create_project(){
         let args:ProjectAction = ProjectAction{
             name: "projectTest".to_string(),
-            path: PathBuf::from("./")
+            path: PathBuf::from("./"),
+            rest_framework: false
         };
 
         let result = create_project(&args);
@@ -35,7 +36,8 @@ mod tests {
     fn must_return_error_create_project(){
         let args:ProjectAction = ProjectAction{
             name: "projectTestError".to_string(),
-            path: PathBuf::from("./")
+            path: PathBuf::from("./"),
+            rest_framework: false
         };
         utils::create_folder(&args.path,&args.name).unwrap();
 

@@ -2,6 +2,13 @@
 
 Django Tools CLI is a command-line interface (CLI) tool written in Rust 🦀 to quickly create APIs in Django. It provides commands to generate different components of a Django project, such as ViewSet, ApiView, and new projects.
 
+## Requirements
+
+- Windows or Linux
+  - For Linux, `sh` (shell) environment is required.
+- Python 3 or later
+- Rust 🦀 (Optional: Required only if you want to compile or modify the project)
+
 ## Installation
 
 1. **Download binaries**: You can download pre-built binaries for your operating system from the [releases section](https://github.com/xansaul/django-tools/releases) of the Django Tools CLI GitHub repository.
