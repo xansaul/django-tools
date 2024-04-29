@@ -39,9 +39,14 @@ pub struct ProjectAction {
     /// Name of the Project
     #[arg(short, long)]
     pub name: String,
-
+    
     /// Path to output the project
     #[arg(short, long, default_value = "./")]
     pub path: std::path::PathBuf,
+    
+    /// Install Django REST framework
+    #[arg(short, long,  default_value="false")]
+    pub rest_framework: bool,
+
 }
 
