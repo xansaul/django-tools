@@ -13,7 +13,14 @@ pub enum Resource {
 
 /// Cli to create APIs quickly in django
 #[derive(Parser, Debug)]
-#[command(version, about, long_about = None)]
+#[command(
+    before_help ="\n",
+    after_help="\nㅤ",
+    name="django-tools", 
+    version = "0.0.2", 
+    about, 
+    long_about = None
+)]
 pub struct CliArgs {
     /// Resource type to generate
     #[command(subcommand)]
@@ -22,6 +29,10 @@ pub struct CliArgs {
 }
 
 #[derive(Args,Debug)]
+#[command(
+    before_help ="\n",
+    after_help="\nㅤ",
+)]
 pub struct ApiType {
 
     /// Name of the api app
@@ -34,6 +45,10 @@ pub struct ApiType {
 }
 
 #[derive(Args,Debug)]
+#[command(
+    before_help ="\n",
+    after_help="\nㅤ",
+)]
 pub struct ProjectAction {
 
     /// Name of the Project
