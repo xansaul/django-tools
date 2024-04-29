@@ -4,6 +4,8 @@ Django Tools CLI is a command-line interface (CLI) tool written in Rust 🦀 to 
 
 ## Requirements
 
+- Windows or Linux
+  - For Linux, `sh` (shell) environment is required.
 - Python 3 or later
 - Rust 🦀 (Optional: Required only if you want to compile or modify the project)
 
